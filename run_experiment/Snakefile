@@ -1,0 +1,125 @@
+import os
+import time
+import csv
+
+workdir: config['workdir']
+
+wildcard_constraints:
+    genome='|'.join([re.escape(x) for x in config["genome"]]),
+    chr='|'.join([re.escape(x) for x in config["chr"]]),
+    ref='|'.join([re.escape(x) for x in config["ref"]]),
+    w='|'.join([re.escape(x) for x in config["w"]]),
+    p='|'.join([re.escape(x) for x in config["p"]]),
+
+################ Preparing output file list #####################
+
+# Note that the data is taken from the 100 Genomes Strain paper
+
+fasta_files = []
+with open(config["file"], "r") as infile:
+    for line in infile:
+        fasta_files.append("reference/fasta/{genome}.{strain}.{chr}.fasta".format(genome=config["genome"],strain=line.split()[0],chr=config["chr"]))
+
+references = []
+for ref in config["ref"]:
+    references.append("reference/{genome}.{chr}.{ref}.pan.fasta".format(genome=config["genome"],chr=config["chr"],ref=ref))
+
+csvs = []
+dics = []
+lasts = []
+occs = []
+parses = []
+sais = []
+for ref in config["ref"]:
+    csvs.append("output/{genome}.{chr}.{ref}.csv".format(genome=config["genome"],chr=config["chr"],ref=ref))
+    dics.append("output/{genome}.{chr}.{ref}.dict".format(genome=config["genome"],chr=config["chr"],ref=ref))
+    lasts.append("output/{genome}.{chr}.{ref}.last".format(genome=config["genome"],chr=config["chr"],ref=ref))
+    occs.append("output/{genome}.{chr}.{ref}.occ".format(genome=config["genome"],chr=config["chr"],ref=ref))
+    parses.append("output/{genome}.{chr}.{ref}.parse".format(genome=config["genome"],chr=config["chr"],ref=ref))
+    sais.append("output/{genome}.{chr}.{ref}.sai".format(genome=config["genome"],chr=config["chr"],ref=ref))
+
+
+combined_csv = "stats/combined.{genome}.{chr}.{w}.{p}.csv".format(genome=config["genome"], chr=config["chr"], w=config["w"], p=config["p"])
+
+############# Rules to create combined pfp stat csv file ################
+
+rule all:
+    input: combined_csv
+    message: "workdir: {}".format(config['workdir'])
+
+rule install_pfp:
+    output:
+        "pfp_sif"
+    shell:
+        """
+        singularity pull pfp_sif docker://moliva3/pfp:latest
+        """
+
+rule ncbi_download:
+    input:
+        file = config["file"],
+    params:
+        script = workflow.source_path("scripts/download_batch_ncbi.py"),
+        chromosome = config["chr"],
+        genome = config["genome"],
+        outdir = "reference/fasta"
+    output: 
+        fasta_files
+    shell:
+        """
+        module load python/3.8
+        python3 {params.script} -i {input.file} -o {params.outdir} -g {params.genome} -c {params.chromosome}
+        """
+
+rule generate_references:
+    input:
+        fasta_files = fasta_files,
+    output:
+        references = expand("reference/{genome}.{chr}.{ref}.pan.fasta", genome=config["genome"], chr=config["chr"], ref=config["ref"])
+    run:
+        for i, ref in enumerate(config["ref"]):
+            output_file = output.references[i]
+            S288c_file = input.fasta_files[-1]
+            shell("cat {S288c_file} >> {output_file}")
+            for j in range(int(ref)):
+                input_fasta = input.fasta_files[j]
+                shell("cat {input_fasta} >> {output_file}")
+
+rule run_pfp:
+    input:
+        pfp_sif = "pfp_sif",
+        references = references,
+    params:
+        w = config["w"],
+        p = config["p"],
+    threads: 32
+    output:
+        csvs = csvs, 
+        dics = dics, 
+        lasts = lasts, 
+        occs = occs, 
+        parses = parses, 
+        sais = sais,
+    run:
+        for i, ref in enumerate(config["ref"]):
+            reference = input.references[i]
+            output_prefix = "output/{genome}.{chr}.{ref}".format(genome = config["genome"], chr = config["chr"], ref = ref)
+            shell("./pfp_sif pfp++ -w {params.w} -p {params.p} -j {threads} -o {output_prefix} -f {reference} --acgt-only --output-occurrences --output-sai --output-last --print-statistics --tmp-dir ${{SLURM_TMPDIR}}")
+
+rule concatenate_csvs:
+    input:
+        csvs = csvs
+    output:
+        combined_csv = "stats/combined.{genome}.{chr}.{w}.{p}.csv".format(genome=config["genome"], chr=config["chr"], w=config["w"], p=config["p"])
+    run:
+        with open(output.combined_csv, "w") as outfile:
+            outfile.write("ref,w,p,parse_length,dict_phrases,dict_tot_length\n")
+            for i, file in enumerate(input.csvs):
+                with open(file, "r") as infile:
+                    csv_reader = csv.reader(infile)
+                    next(csv_reader)
+                    for row in csv_reader:
+                        outfile.write("{ref},{w},{p},{parse_length},{dict_phrases},{dict_tot_length}\n".format(
+                            ref=config["ref"][i], w=row[0], p=row[1], parse_length=row[2], dict_phrases=row[3], dict_tot_length=row[4]))
+
+
