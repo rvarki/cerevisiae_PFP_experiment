@@ -14,6 +14,7 @@ wildcard_constraints:
 ################ Preparing output file list #####################
 
 # Note that the data is taken from the 100 Genomes Strain paper
+shell("mkdir -p logs")
 
 fasta_files = []
 with open(config["file"], "r") as infile:
@@ -67,7 +68,7 @@ rule ncbi_download:
         fasta_files
     shell:
         """
-        module load python/3.8
+        mkdir -p reference/fasta
         python3 {params.script} -i {input.file} -o {params.outdir} -g {params.genome} -c {params.chromosome}
         """
 
@@ -101,10 +102,12 @@ rule run_pfp:
         parses = parses, 
         sais = sais,
     run:
+        shell("mkdir -p output")
+        shell("mkdir -p tmp")
         for i, ref in enumerate(config["ref"]):
             reference = input.references[i]
             output_prefix = "output/{genome}.{chr}.{ref}".format(genome = config["genome"], chr = config["chr"], ref = ref)
-            shell("./pfp_sif pfp++ -w {params.w} -p {params.p} -j {threads} -o {output_prefix} -f {reference} --acgt-only --output-occurrences --output-sai --output-last --print-statistics --tmp-dir ${{SLURM_TMPDIR}}")
+            shell("./pfp_sif pfp++ -w {params.w} -p {params.p} -j {threads} -o {output_prefix} -f {reference} --acgt-only --output-occurrences --output-sai --output-last --print-statistics --tmp-dir ./tmp/")
 
 rule concatenate_csvs:
     input:
@@ -112,6 +115,7 @@ rule concatenate_csvs:
     output:
         combined_csv = "stats/combined.{genome}.{chr}.{w}.{p}.csv".format(genome=config["genome"], chr=config["chr"], w=config["w"], p=config["p"])
     run:
+        shell("mkdir -p stats")
         with open(output.combined_csv, "w") as outfile:
             outfile.write("ref,w,p,parse_length,dict_phrases,dict_tot_length\n")
             for i, file in enumerate(input.csvs):
