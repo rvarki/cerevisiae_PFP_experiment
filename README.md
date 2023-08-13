@@ -37,7 +37,8 @@ From a fresh clone of the repository, the Snakemake will attempt to run these ru
 This file contains the user configurable parameters in the experiment. These parameters are ...
 * workdir: "path to directory"  - This parameter changes the working directory for these experiments. By default, it is set to the directory above the user's current directory.
 * genome: "genome name"  - This parameter changes the genome name which is used in the naming of the output files. By default, it is set to "cerevisiae".
-* chr: "chr name"  - This parameter changes the chromosome name which is used in the naming of the output files. By default, it is set to "chr1"
-* ref: ["list of integers"]  - This parameter controls the size of the pangenomes created. By default, it is set to ["10","20","30","40","50","60","70","80","93"]
+* chr: "chr name"  - This parameter changes the chromosome name which is used in the naming of the output files. By default, it is set to "chr1".
+* ref: ["list of integers"]  - This parameter controls the size of the pangenomes created. By default, it is set to ["10","20","30","40","50","60","70","80","93"].
 * w: "integer"  - This parameter controls the window size used in PFP. By default, it is set to 10.
-* p: "integer"  - This parameter controls the 
+* p: "integer"  - This parameter controls the modulus used in the Rabin Karp hash function used by PFP. By default, it is set to 100.
+* file: "path to file"  - This parameter indicates where the accession file of interest is located. By default, it is located in the run_experiment directory.
