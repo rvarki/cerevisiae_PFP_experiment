@@ -6,6 +6,11 @@ This repository contains the Snakemake used to run the cerevisiae PFP experiment
 
 The experiments were on HiPerGator, the University of Florida's supercomputing cluster. HiPerGator uses Slurm for managing hardware resources and scheduling jobs. For more information on HiPerGator, see https://www.rc.ufl.edu/about/hipergator/.
 
+## Data
+
+The cerevisiae strains used in these experiments are the strains referenced in this paper:  *The 100-genomes strains, an S. cerevisiae resource that illuminates its natural phenotypic and genotypic variation and emergence as an opportunistic pathogen* (doi: 10.1101/gr.185538.114). According to the paper, these strains are of near reference quality.
+
+## Run Command
 
 
 1. The Snakemake will attempt to install Marco Olivia's PFP (https://github.com/marco-oliva/pfp) via the singularity option. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
