@@ -12,6 +12,10 @@ The cerevisiae strains used in these experiments are the strains referenced in t
 
 ## Run Command
 
+The run command provided below assumes that you are working on a computing cluster that uses the Slurm scheduler.
+
+
+
 
 1. The Snakemake will attempt to install Marco Olivia's PFP (https://github.com/marco-oliva/pfp) via the singularity option. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
 
