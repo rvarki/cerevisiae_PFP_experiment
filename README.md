@@ -31,4 +31,13 @@ From a fresh clone of the repository, the Snakemake will attempt to run these ru
 4. The Snakemake will run PFP on the pangenome fasta files. The Snakemake will create a directory called `output` in the working directory where it will write the PFP output files. PFP should output files with these extensions `.csv, .dict, .last, .occ, .parse, .sai`. The csv file contains the statistics reported by PFP. 
    
 5. The Snakemake will combine all the csv files into one larger csv file called `combined.{genome}.{chr}.{w}.{p}.csv` where by default {genome}, {chr}, {w}, {p} are set to "cerevisiae", "chr1", "10", and "100" respectively. The Snakemake wull create a directory called `stats` in the working directory where it will write this file. 
-  
+
+## run_experiment.json
+
+This file contains the user configurable parameters in the experiment. These parameters are ...
+* workdir: "path to directory"  - This parameter changes the working directory for these experiments. By default, it is set to the directory above the user's current directory.
+* genome: "genome name"  - This parameter changes the genome name which is used in the naming of the output files. By default, it is set to "cerevisiae".
+* chr: "chr name"  - This parameter changes the chromosome name which is used in the naming of the output files. By default, it is set to "chr1"
+* ref: ["list of integers"]  - This parameter controls the size of the pangenomes created. By default, it is set to ["10","20","30","40","50","60","70","80","93"]
+* w: "integer"  - This parameter controls the window size used in PFP. By default, it is set to 10.
+* p: "integer"  - This parameter controls the 
