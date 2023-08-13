@@ -12,7 +12,7 @@ The 93 cerevisiae strains used in these experiments are the strains referenced i
 
 ## Run Command
 
-The run command provided below assumes that you are working on a computing cluster that uses the Slurm scheduler. Note that you should modify `cluster.json` prior to running the command so that it reflects your cluster specificiations. 
+The run command provided below assumes that you are working on a computing cluster that uses the Slurm scheduler. **Note** that you should modify `cluster.json` prior to running the command so that it reflects your cluster specificiations. 
 
 ``` bash
 cd run_experiment
@@ -42,3 +42,7 @@ This file contains the user configurable parameters in the experiment. These par
 * w: "integer"  - This parameter controls the window size used in PFP. By default, it is set to 10.
 * p: "integer"  - This parameter controls the modulus used in the Rabin Karp hash function used by PFP. By default, it is set to 100.
 * file: "path to file"  - This parameter indicates where the accession file of interest is located. By default, it is located in the run_experiment directory.
+
+## chr1_accessions.txt
+
+This file contains the accession numbers of the chromosome 1 cerevisiae strains to download from NCBI. Each line in the file is formatted like this: [Strain Name] [Whitespace] [Accession Number] [Newline]. If you wanted to run this experiment with a different chromsome for example, you could create your own file as long as it follows this format. **Note** the last entry in the file is presumed to be the "reference" entry. In this file, the last entry corresponds to strain S288c. The last strain in the file will be apart of all the pangenomes created. 
