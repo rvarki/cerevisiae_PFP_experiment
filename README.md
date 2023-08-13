@@ -22,7 +22,7 @@ snakemake --cluster "sbatch -A {cluster.account} -q {cluster.qos} -c {cluster.cp
 
 From a fresh clone of the repository, the Snakemake will attempt to run these rules by default:
 
-1. The Snakemake will install Marco Olivia's PFP (https://github.com/marco-oliva/pfp) via the singularity option. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
+1. The Snakemake will install Marco Oliva's PFP (https://github.com/marco-oliva/pfp) via the singularity option. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
 
 2. The Snakemake will create a directory called `reference/fasta` in the working directory and will attempt to download the fasta files corresponding to the accession numbers listed in `chr1_accessions.txt` from the NCBI database. These files will be labeled as `{genome}.{strain}.{chr}.fasta`. By default {genome} and {chr} are set to "cerevisiae" and "chr1" respectively, and {strain} will be set to the name provided in `chr1_accessions.txt` **Note**: Occassionally, not all the files will download successfully due to issues with NCBI and the rule will fail. If this happens, re-run the Snakemake again. 
   
