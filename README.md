@@ -14,7 +14,9 @@ The cerevisiae strains used in these experiments are the strains referenced in t
 
 The run command provided below assumes that you are working on a computing cluster that uses the Slurm scheduler.
 
-
+``` bash
+snakemake --cluster "sbatch -A {cluster.account} -q {cluster.qos} -c {cluster.cpus-per-task} -N {cluster.Nodes}  -t {cluster.runtime} --mem {cluster.mem} -J {cluster.jobname} --mail-type={cluster.mail_type} --mail-user={cluster.mail} --output {cluster.out} --error {cluster.err}" --cluster-config cluster.json --jobs 100 --latency-wait 120 --configfile run_experiment.json
+```
 
 
 1. The Snakemake will attempt to install Marco Olivia's PFP (https://github.com/marco-oliva/pfp) via the singularity option. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
