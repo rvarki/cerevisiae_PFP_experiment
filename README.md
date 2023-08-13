@@ -12,10 +12,10 @@ The cerevisiae strains used in these experiments are the strains referenced in t
 
 ## Run Command
 
-The run command provided below assumes that you are working on a computing cluster that uses the Slurm scheduler.
+The run command provided below assumes that you are working on a computing cluster that uses the Slurm scheduler. Note that you should modify `cluster.json` prior to running the command so that it reflects your cluster specificiations. 
 
 ``` bash
-snakemake --cluster "sbatch -A {cluster.account} -q {cluster.qos} -c {cluster.cpus-per-task} -N {cluster.Nodes}  -t {cluster.runtime} --mem {cluster.mem} -J {cluster.jobname} --mail-type={cluster.mail_type} --mail-user={cluster.mail} --output {cluster.out} --error {cluster.err}" --cluster-config cluster.json --jobs 100 --latency-wait 120 --configfile run_experiment.json
+snakemake --cluster "sbatch -A {cluster.account} -q {cluster.qos} -c {cluster.cpus-per-task} -N {cluster.Nodes}  -t {cluster.runtime} --mem {cluster.mem} -J {cluster.jobname} --output {cluster.out} --error {cluster.err}" --cluster-config cluster.json --jobs 100 --latency-wait 120 --configfile run_experiment.json
 ```
 
 
