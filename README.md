@@ -30,7 +30,7 @@ From a fresh clone of the repository, the Snakemake will attempt to run these ru
  
 4. The Snakemake will run PFP on the pangenome fasta files. The Snakemake will create a directory called `output` in the working directory where it will write the PFP output files. PFP should output files with these extensions `.csv, .dict, .last, .occ, .parse, .sai`. The csv file contains the statistics reported by PFP. 
    
-5. The Snakemake will combine all the csv files into one larger csv file called `combined.{genome}.{chr}.{w}.{p}.csv` where by default {genome}, {chr}, {w}, {p} are set to "cerevisiae", "chr1", "10", and "100" respectively. The Snakemake wull create a directory called `stats` in the working directory where it will write this file. 
+5. The Snakemake will combine all the csv files into one larger csv file called `combined.{genome}.{chr}.{w}.{p}.csv` where by default {genome}, {chr}, {w}, {p} are set to "cerevisiae", "chr1", "10", and "100" respectively. The Snakemake will create a directory called `stats` in the working directory where it will write this file. 
 
 ## run_experiment.json
 
