@@ -1,6 +1,12 @@
 # Cerevisiae PFP experiments
 
-This repository contains the Snakemake used to run the cerevisiae PFP experiments. From a fresh clone of the repo, the Snakemake will run these rules in order by default:
+This repository contains the Snakemake used to run the cerevisiae PFP experiments. In these experiments, PFP was applied on pangenomes consisting of chromosome I of different cerevisiae strains. The goal of these experiments was to ascertain whether PFP is a viable option for tokenization of genomic data.
+
+## Platform
+
+The experiments were on HiPerGator, the University of Florida's supercomputing cluster. HiPerGator uses Slurm for managing hardware resources and scheduling jobs. For more information on HiPerGator, see https://www.rc.ufl.edu/about/hipergator/.
+
+
 
 1. The Snakemake will attempt to install Marco Olivia's PFP (https://github.com/marco-oliva/pfp) via the singularity option. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
 
