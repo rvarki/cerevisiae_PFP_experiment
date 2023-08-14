@@ -22,7 +22,7 @@ snakemake --cluster "sbatch -A {cluster.account} -q {cluster.qos} -c {cluster.cp
 
 From a fresh clone of the repository, the Snakemake will attempt to run these rules by default:
 
-1. The Snakemake will install Marco Oliva's PFP (https://github.com/marco-oliva/pfp) via the singularity option. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
+1. The Snakemake will install Marco Oliva's PFP (https://github.com/marco-oliva/pfp) via the singularity option in the working directory. This will install an executable called `pfp_sif` in the working directory. **Note**: If there are issues downloading using the singularity option, please refer to Marco's Github page and try to download PFP using the other options described on the page.  
 
 2. The Snakemake will create a directory called `reference/fasta` in the working directory and will attempt to download the fasta files corresponding to the accession numbers listed in `chr1_accessions.txt` from the NCBI database. These files will be labeled as `{genome}.{strain}.{chr}.fasta`. By default {genome} and {chr} are set to "cerevisiae" and "chr1" respectively, and {strain} will be set to the name provided in `chr1_accessions.txt` **Note**: Occassionally, not all the files will download successfully due to issues with NCBI and the rule will fail. If this happens, re-run the Snakemake again. 
   
@@ -40,7 +40,7 @@ This file contains the user configurable parameters in the experiment. These par
 * chr: "chr name"  - This parameter changes the chromosome name which is used in the naming of the output files. By default, it is set to "chr1".
 * ref: ["list of integers"]  - This parameter controls the size of the pangenomes created. By default, it is set to ["10","20","30","40","50","60","70","80","93"].
 * w: "integer"  - This parameter controls the window size used in PFP. By default, it is set to 10.
-* p: "integer"  - This parameter controls the modulus used in the Rabin Karp hash function used by PFP. By default, it is set to 100.
+* p: "integer"  - This parameter controls the modulo used in the Rabin Karp hash function used by PFP. By default, it is set to 100.
 * file: "path to file"  - This parameter indicates where the accession file of interest is located. By default, it is located in the run_experiment directory.
 
 ## chr1_accessions.txt
