@@ -1,6 +1,6 @@
 # Cerevisiae PFP experiments
 
-This repository contains the Snakemake used to run the cerevisiae PFP experiments. In these experiments, PFP was applied on pangenomes consisting of chromosome I of different cerevisiae strains. The goal of these experiments was to ascertain whether PFP is a viable option for tokenization of genomic data.
+This repository contains the Snakemake used to run the cerevisiae PFP experiments. In these experiments, PFP was applied on pangenomes consisting of chromosome 1 of different cerevisiae strains. The goal of these experiments was to ascertain whether PFP is a viable option for tokenization of genomic data.
 
 ## Platform
 
